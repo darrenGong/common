@@ -1,0 +1,7 @@
+{
+  "zookeeper": {
+    "servers": "192.168.153.88:2181,192.168.153.89:2181,192.168.153.90:2181",
+    "uvermanager": "/NS/ulb/set666888/uvermanager/pre",
+    "udatabase": "/NS/region666888/udatabase/cluster_set0"
+  }
+}

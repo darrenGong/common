@@ -3,7 +3,6 @@ package common
 import (
 	"strings"
 	"uframework/message/proto/uns"
-	"sync"
 	"log"
 	"errors"
 	"math/rand"

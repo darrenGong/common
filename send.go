@@ -8,6 +8,7 @@ import (
 	"net"
 )
 
+
 const (
 	UVERMANAGER = "uvermanager"
 )
@@ -17,14 +18,14 @@ func InitConnMap() {
 }
 
 func SendMsgToUVERManager(msg []byte) error {
-	ifConn, err := getConn(UVERMANAGER, "/NS/ulb/set666888/uvermanager/pre")
+	ifConn, err := getConn(UVERMANAGER, gConfig.UVERManager)
 	if err != nil {
-		log.Printf("Failed to get conn[srv:%s, path:%s]", UVERMANAGER, "/NS/ulb/set666888/uvermanager/pre")
+		log.Printf("Failed to get conn[srv:%s, path:%s]", UVERMANAGER, gConfig.UVERManager)
 		return err
 	}
 
 	conn := ifConn.(net.Conn)
-	conn.Write(msg)
+	log.Printf("Send data to uvermanager[%s]", conn.RemoteAddr().String())
 
 	return nil
 }
@@ -62,9 +63,11 @@ func RegexpCheck(src, regexExpression string) error {
 	return nil
 }
 
-func getConn(serverType string, path string) (interface{}, error){
+func getConn(serverType string, path string) (interface{}, error) {
 	conn := gConnMap.GetConn(serverType)
 	if conn == nil {
+		log.Printf("Invalid connect so that reconnect target[%s]", serverType)
+
 		laddr, err := GetServerNode(path)
 		if err != nil {
 			log.Printf("Failed to get node value[%s]", path)
