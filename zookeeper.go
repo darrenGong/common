@@ -63,7 +63,7 @@ func getNode(path string) ([]byte, error) {
 	nodePath, err := getNodePath(path)
 	if err != nil {
 		log.Printf("Failed to get node path[%s]", path)
-		return "", err
+		return nil, err
 	}
 
 	valueByte, _, err := gZKConn.Get(nodePath)
