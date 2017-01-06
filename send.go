@@ -3,6 +3,7 @@ package common
 import (
 	"log"
 	"net"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -12,6 +13,22 @@ const (
 
 func InitConnMap() {
 	gConnMap = NewConnMap()
+}
+
+func ReleaseConn() {
+	for key, ifConn := range gConnMap.m {
+		if _, ok := gConfig.NormalServerMap[key]; ok {
+			conn := ifConn.(net.Conn)
+			conn.Close()
+		}
+
+		if _, ok := gConfig.GrpcServerMap[key]; ok {
+			conn := ifConn.(grpc.ClientConn)
+			conn.Close()
+		}
+
+		log.Printf("Invalid server type when release conn[%s]", key)
+	}
 }
 
 func SendMsgToUVERManager(msg []byte) error {
@@ -25,4 +42,14 @@ func SendMsgToUVERManager(msg []byte) error {
 	log.Printf("Send data to uvermanager[%s]", conn.RemoteAddr().String())
 
 	return nil
+}
+
+func GetConnToHelloManager(msg []byte) (*grpc.ClientConn, error) {
+	ifConn, err := getConn(HELLOMANAGER, gConfig.NormalServerMap[HELLOMANAGER])
+	if err != nil {
+		log.Printf("Failed to get conn[srv:%s, path:%s]", HELLOMANAGER, gConfig.NormalServerMap[HELLOMANAGER])
+		return nil, err
+	}
+
+	return ifConn.(*grpc.ClientConn), nil
 }

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/samuel/go-zookeeper/zk"
-	"go_test/common/config"
+	"common/config"
 	"io/ioutil"
 	"log"
 	"net"
@@ -28,7 +28,7 @@ const (
 )
 
 func InitCommon(selfPath, selfValue string) {
-	if err := ParseConfig("F:/go-dev/src/go_test/common/config/config.json", &gConfig); err != nil {
+	if err := ParseConfig("F:/go-dev/src/common/config/config.json", &gConfig); err != nil {
 		log.Fatalf("Failed to parse config[err:%v]", err)
 	}
 
@@ -37,7 +37,9 @@ func InitCommon(selfPath, selfValue string) {
 }
 
 func Release() {
-	gSyncWaitGroup.Wait()
+	defer gSyncWaitGroup.Wait()
+
+	ReleaseConn()
 }
 
 func ParseConfig(configPath string, config *config.Config) error {
@@ -127,3 +129,4 @@ func getReallyConn(serverType, laddr string) (interface{}, error) {
 
 	return nil, errors.New("Invalid server type")
 }
+

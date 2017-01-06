@@ -6,7 +6,7 @@
         "udatabase": "/NS/region666888/udatabase/cluster_set0"
     },
     "grpc": {
-        "hellomanager": "/NS/ulb/set666888/hellomanager/master"
+        "hellomanager": "/NS/TestEnv/hellomanager/master"
     }
   }
 }

@@ -10,7 +10,6 @@ import (
 	"github.com/samuel/go-zookeeper/zk"
 	"time"
 	"uframework/message/protobuf/proto"
-	"fmt"
 )
 
 const (
@@ -48,14 +47,14 @@ func GetServerNode(path string) (string, error) {
 		return "", err
 	}
 
-	ipaddr, port, err := parseZKProtoContent(valueByte)
+	/*ipaddr, port, err := parseZKProtoContent(valueByte)
 	if err != nil {
 		log.Printf("Failed to parse proto content[%v]", valueByte)
 		return "", err
 	}
 
-	log.Printf("ipaddr: %s, port:%d", ipaddr, port)
-	return strings.Join([]string{ipaddr, fmt.Sprintf("%d", port)}, ":"), nil
+	log.Printf("ipaddr: %s, port:%d", ipaddr, port) */
+	return string(valueByte), nil
 }
 
 func getNode(path string) ([]byte, error) {
