@@ -60,7 +60,7 @@ func ParseConfig(configPath string, config *config.Config) error {
 func CheckZKValue(value string) (bool, error) {
 	addrs := strings.Split(value, ":")
 	if len(addrs) != 2 {
-		log.Printf("Addrs length is not equal at two[len:%d]", len(addrs))
+		log.Printf("The length is not equal at two after split value[value:%s, len:%d]", value, len(addrs))
 		return false, errors.New("Invalid length")
 	}
 
