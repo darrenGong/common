@@ -102,7 +102,7 @@ func getConn(serverType string, path string) (interface{}, error) {
 		}
 
 		if bValid, err := CheckZKValue(laddr); !bValid || err != nil {
-			log.Printf("Failed to check value[%s]", laddr)
+			log.Printf("Failed to check node value[%s]", laddr)
 			return nil, err
 		}
 

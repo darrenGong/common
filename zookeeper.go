@@ -54,6 +54,7 @@ func GetServerNode(path string) (string, error) {
 	}
 
 	log.Printf("ipaddr: %s, port:%d", ipaddr, port) */
+	log.Printf("Successful get node value[path:%s, value:%s]", path, valueByte)
 	return string(valueByte), nil
 }
 

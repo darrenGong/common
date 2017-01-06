@@ -45,9 +45,9 @@ func SendMsgToUVERManager(msg []byte) error {
 }
 
 func GetConnToHelloManager() (*grpc.ClientConn, error) {
-	ifConn, err := getConn(HELLOMANAGER, gConfig.NormalServerMap[HELLOMANAGER])
+	ifConn, err := getConn(HELLOMANAGER, gConfig.GrpcServerMap[HELLOMANAGER])
 	if err != nil {
-		log.Printf("Failed to get conn[srv:%s, path:%s]", HELLOMANAGER, gConfig.NormalServerMap[HELLOMANAGER])
+		log.Printf("Failed to get conn[srv:%s, path:%s]", HELLOMANAGER, gConfig.GrpcServerMap[HELLOMANAGER])
 		return nil, err
 	}
 
