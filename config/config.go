@@ -6,8 +6,8 @@ type Config struct {
 
 type Zookeeper struct {
 	Servers         string                       `json:"servers"`
-	NormalServerMap map[string]map[string]string `json:"normal"`
-	GrpcServerMap   map[string]map[string]string `json:"grpc"`
+	NormalServerMap map[string]string `json:"normal"`
+	GrpcServerMap   map[string]string `json:"grpc"`
 }
 
 type NormalServer struct {

@@ -12,6 +12,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -116,11 +117,11 @@ func getConn(serverType string, path string) (interface{}, error) {
 }
 
 func getReallyConn(serverType, laddr string) (interface{}, error) {
-	if _, ok := gConfig.NormalServerMap["normal"][serverType]; ok {
+	if _, ok := gConfig.NormalServerMap[serverType]; ok {
 		return net.DialTimeout("tcp", laddr, CONNECT_TIMEOUT)
 	}
 
-	if _, ok := gConfig.GrpcServerMap["grpc"]["serverType"]; ok {
+	if _, ok := gConfig.GrpcServerMap[serverType]; ok {
 		return grpc.Dial(laddr, grpc.WithInsecure())
 	}
 

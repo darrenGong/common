@@ -15,9 +15,9 @@ func InitConnMap() {
 }
 
 func SendMsgToUVERManager(msg []byte) error {
-	ifConn, err := getConn(UVERMANAGER, gConfig.UVERManager)
+	ifConn, err := getConn(UVERMANAGER, gConfig.NormalServerMap[UVERMANAGER])
 	if err != nil {
-		log.Printf("Failed to get conn[srv:%s, path:%s]", UVERMANAGER, gConfig.UVERManager)
+		log.Printf("Failed to get conn[srv:%s, path:%s]", UVERMANAGER, gConfig.NormalServerMap[UVERMANAGER])
 		return err
 	}
 
