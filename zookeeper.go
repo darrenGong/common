@@ -18,7 +18,6 @@ const (
 	REGISTER_TIMEOUT = 20 * time.Second
 )
 
-
 func InitZookeeper(servers, selfPath, selfValue string) {
 	zkConn, _, err := zk.Connect(strings.Split(servers, ","), TIMEOUT)
 	if err != nil {
@@ -87,6 +86,10 @@ func createNode(path string, data []byte) (string, error) {
 			return "", err
 		}
 
+		if bValid {
+			continue
+		}
+
 		flags := int32(0)
 		value := []byte(nil)
 		if index == len(paths) - 2 {
@@ -94,13 +97,12 @@ func createNode(path string, data []byte) (string, error) {
 			value = data
 		}
 
-		if !bValid {
-			reallyPath, err = gZKConn.Create(nodePath, value, flags, zk.WorldACL(zk.PermAll))
-			if err != nil {
-				log.Fatalf("Failed to create node path[%s]", nodePath)
-				return "", err
-			}
+		reallyPath, err = gZKConn.Create(nodePath, value, flags, zk.WorldACL(zk.PermAll))
+		if err != nil {
+			log.Fatalf("Failed to create node path[%s]", nodePath)
+			return "", err
 		}
+
 	}
 
 	return reallyPath, nil
