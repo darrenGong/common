@@ -1,24 +1,24 @@
 package common
 
 import (
-	"sync"
+	"encoding/json"
+	"errors"
 	"github.com/samuel/go-zookeeper/zk"
-	"time"
 	"go_test/common/config"
 	"io/ioutil"
 	"log"
-	"encoding/json"
 	"net"
-	"strings"
 	"regexp"
-	"errors"
+	"strings"
+	"sync"
+	"time"
 )
 
 var (
 	gZKConn  *zk.Conn
 	gConnMap *ConnMap
 
-	gConfig  config.Config
+	gConfig        config.Config
 	gSyncWaitGroup sync.WaitGroup
 )
 
@@ -26,10 +26,8 @@ const (
 	CONNECT_TIMEOUT = 5 * time.Second
 )
 
-
 func InitCommon(selfPath, selfValue string) {
-	if err := ParseConfig("F:/go-dev/src/go_test/common/config/config.json", &gConfig);
-		err != nil {
+	if err := ParseConfig("F:/go-dev/src/go_test/common/config/config.json", &gConfig); err != nil {
 		log.Fatalf("Failed to parse config[err:%v]", err)
 	}
 
@@ -105,7 +103,7 @@ func getConn(serverType string, path string) (interface{}, error) {
 			return nil, err
 		}
 
-		conn, err = net.DialTimeout("tcp", laddr, CONNECT_TIMEOUT)
+		conn, err = getReallyConn(serverType, laddr)
 		if err != nil {
 			log.Printf("Failed to dial connect[%s]", laddr)
 			return nil, err
@@ -115,4 +113,16 @@ func getConn(serverType string, path string) (interface{}, error) {
 	}
 
 	return conn, nil
+}
+
+func getReallyConn(serverType, laddr string) (interface{}, error) {
+	if _, ok := gConfig.NormalServerMap["normal"][serverType]; ok {
+		return net.DialTimeout("tcp", laddr, CONNECT_TIMEOUT)
+	}
+
+	if _, ok := gConfig.GrpcServerMap["grpc"]["serverType"]; ok {
+		return grpc.Dial(laddr, grpc.WithInsecure())
+	}
+
+	return nil, errors.New("Invalid server type")
 }

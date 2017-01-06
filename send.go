@@ -5,9 +5,9 @@ import (
 	"net"
 )
 
-
 const (
-	UVERMANAGER = "uvermanager"
+	UVERMANAGER  = "uvermanager"
+	HELLOMANAGER = "hellomanager"
 )
 
 func InitConnMap() {
@@ -26,5 +26,3 @@ func SendMsgToUVERManager(msg []byte) error {
 
 	return nil
 }
-
-
